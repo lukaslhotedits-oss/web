@@ -1196,14 +1196,20 @@ initScrollReveals();
     if (saved !== null) {
       sessionStorage.removeItem('dl_scroll');
       var y = parseInt(saved, 10);
-      if (!isNaN(y) && y > 0) {
+if (!isNaN(y) && y > 0) {
+        var prevBehavior = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = 'auto';
+        window.scrollTo(0, y);
+        document.addEventListener('DOMContentLoaded', function() {
+          window.scrollTo(0, y);
+        });
         window.addEventListener('load', function() {
-          setTimeout(function() {
-            window.scrollTo(0, y);
-          }, 60);
+          window.scrollTo(0, y);
+          requestAnimationFrame(function() {
+            document.documentElement.style.scrollBehavior = prevBehavior;
+          });
         });
       }
-    }
   } catch(e) {}
 })();
 </script>
