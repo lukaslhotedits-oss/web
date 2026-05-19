@@ -1181,6 +1181,31 @@ var initLang = detectLang();
 setLanguage(initLang, { persist: false, animate: false });
 setTimeout(runHeroSequence, 80);
 initScrollReveals();
+  /* ─── REMEMBER SCROLL ON DEMO CLICK ─── */
+(function() {
+  // Uložit pozici scrollu při kliknutí na demo kartu
+  document.querySelectorAll('[data-showcase-href]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      try { sessionStorage.setItem('dl_scroll', String(window.scrollY)); } catch(e) {}
+    });
+  });
+
+  // Po návratu na hlavní web obnovit pozici
+  try {
+    var saved = sessionStorage.getItem('dl_scroll');
+    if (saved !== null) {
+      sessionStorage.removeItem('dl_scroll');
+      var y = parseInt(saved, 10);
+      if (!isNaN(y) && y > 0) {
+        window.addEventListener('load', function() {
+          setTimeout(function() {
+            window.scrollTo(0, y);
+          }, 60);
+        });
+      }
+    }
+  } catch(e) {}
+})();
 </script>
 
 <!--
